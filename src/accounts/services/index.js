@@ -6,8 +6,9 @@ export default {
     lastName,
     email,
     password,
-    { accountsRepository }
+    { accountsRepository, authenticator }
   ) => {
+    password = await authenticator.encrypt(password);
     const account = new Account(
       undefined,
       firstName,
@@ -15,6 +16,7 @@ export default {
       email,
       password
     );
+
     return accountsRepository.persist(account);
   },
   getAccount: (accountId, { accountsRepository }) => {
@@ -32,25 +34,22 @@ export default {
     lastName,
     email,
     password,
-    { accountsRepository }
+    { accountsRepository, authenticator }
   ) => {
+    password = await authenticator.encrypt(password);
     const account = new Account(id, firstName, lastName, email, password);
 
     return accountsRepository.merge(account);
   },
-  authenticate: async (
-    email,
-    password,
-    { accountsRepository, authenticator }
-  ) => {
-    const account = await accountsRepository.getByEmail(email);
-    const result = await authenticator.compare(password, account.password);
-    if (!result) {
-      throw new Error("Bad credentials");
-    }
-    const token = JSON.stringify({ email: account.email }); //JUST Temporary!!! TODO: make it better
-    return token;
-  },
+  authenticate: async (email, password, { accountsRepository, authenticator, tokenManager }) => {
+      const account = await accountsRepository.getByEmail(email);
+      const result = await authenticator.compare(password, account.password);
+      if (!result) {
+        throw new Error('Bad credentials');
+      }
+      const token = tokenManager.generate({ email: account.email });
+      return token;
+    },
   getFavourites: async (accountId, { accountsRepository }) => {
     const account = await accountsRepository.get(accountId);
     return account.favourites;
