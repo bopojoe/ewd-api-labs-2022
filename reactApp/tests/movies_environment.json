@@ -1,0 +1,15 @@
+{
+	"id": "8513c5b3-369c-4ce3-9d57-f421912ecdcd",
+	"name": "movies_environment",
+	"values": [
+		{
+			"key": "url",
+			"value": "http://localhost:8080",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2022-05-17T23:29:30.124Z",
+	"_postman_exported_using": "Postman/9.15.13"
+}
