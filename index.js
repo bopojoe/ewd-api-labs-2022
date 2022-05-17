@@ -1,4 +1,5 @@
 import createAccountsRouter from "./src/accounts/routes";
+import db from "./src/config/db";
 import buildDependencies from "./src/config/dependencies";
 import createMoviesRouter from "./src/movies/routes";
 import dotenv from "dotenv";
@@ -8,8 +9,11 @@ import genresRouter from "./src/genres";
 
 dotenv.config();
 
-const app = express();
+db.init();
+
 const dependencies = buildDependencies();
+const app = express();
+
 
 
 const port = process.env.PORT;
