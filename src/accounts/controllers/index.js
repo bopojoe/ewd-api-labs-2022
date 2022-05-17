@@ -34,7 +34,7 @@ export default (dependencies) => {
     //output
     response.status(200).json(account);
   };
-    
+
   const getAccount = async (request, response, next) => {
     //input
     const accountId = request.params.id;
@@ -68,19 +68,19 @@ export default (dependencies) => {
       const { movieId } = request.body;
       const id = request.params.id;
       const favourites = await accountService.getFavourites(id, dependencies);
-      const duplicate = await favourites.filter(favourite => favourite == parseInt(movieId));
-      if(duplicate[0]){
-        response.status(405).json({error: "duplicate data detected"});
-      }else{
-          const account = await accountService.addFavourite(
-            id,
-            movieId,
-            dependencies
-          );
-          response.status(200).json(account);
-
+      const duplicate = await favourites.filter(
+        (favourite) => favourite == parseInt(movieId)
+      );
+      if (duplicate[0]) {
+        response.status(405).json({ error: "duplicate data detected" });
+      } else {
+        const account = await accountService.addFavourite(
+          id,
+          movieId,
+          dependencies
+        );
+        response.status(200).json(account);
       }
-      
     } catch (err) {
       next(new Error(`Invalid Data ${err.message}`));
     }
@@ -94,7 +94,31 @@ export default (dependencies) => {
       next(new Error(`Invalid Data ${err.message}`));
     }
   };
+  const verifyToken = async (request, response, next) => {
+    try {
+      // Input
+      const authHeader = request.headers.authorization;
 
+      // Treatment
+
+      const accessToken = authHeader.split(" ")[1];
+      const user = await accountService.verifyToken(accessToken, dependencies);
+
+      //output
+      next();
+    } catch (err) {
+      //Token Verification Failed
+      console.log(err.message);
+      if (
+        err.message ==
+        "Cannot read properties of undefined (reading 'split')"
+      ) {
+        next(new Error(`Verification Failed: no token supplied`));
+      } else {
+        next(new Error(`Verification Failed ${err.message}`));
+      }
+    }
+  };
 
   return {
     getFavourites,
@@ -104,5 +128,6 @@ export default (dependencies) => {
     getAccount,
     listAccounts,
     updateAccount,
+    verifyToken,
   };
 };
