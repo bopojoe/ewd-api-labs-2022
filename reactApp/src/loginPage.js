@@ -2,11 +2,14 @@ import React, { useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { AuthContext } from "./authContext";
 import { Link } from "react-router-dom";
+import { MoviesContext } from "./moviesContext";
 
 const LoginPage = (props) => {
   const context = useContext(AuthContext);
+  const moviesContext = useContext(MoviesContext); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
 
   const login = () => {
     context.authenticate(email, password);
@@ -17,6 +20,7 @@ const LoginPage = (props) => {
   const { from } = props.location.state || { from: { pathname: "/" } };
 
   if (context.isAuthenticated === true) {
+    moviesContext.setAuthenticated(context.isAuthenticated);
     return <Redirect to={from} />;
   }
   return (
