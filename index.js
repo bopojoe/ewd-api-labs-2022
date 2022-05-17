@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import express from "express";
 import moviesRouter from "./src/movies";
 import genresRouter from "./src/genres";
+import errorHandler from "./src/utils/ErrorHandler";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api/movies", createMoviesRouter(dependencies));
 app.use("/api/genres", genresRouter);
 app.use("/api/accounts", createAccountsRouter(dependencies));
+app.use(errorHandler);
 
 
 app.listen(port, () => {
