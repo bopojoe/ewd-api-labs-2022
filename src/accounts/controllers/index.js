@@ -16,6 +16,25 @@ export default (dependencies) => {
     //output
     response.status(201).json(account);
   };
+
+  const updateAccount = async (request, response, next) => {
+    // Input
+    const id = request.params.id;
+    const { firstName, lastName, email, password } = request.body;
+    //TODO - You implement the rest
+    const account = await accountService.updateAccount(
+      id,
+      firstName,
+      lastName,
+      email,
+      password,
+      dependencies
+    );
+    //const output = dependencies.accountsSerializer.serialize(account);
+    //output
+    response.status(200).json(account);
+  };
+    
   const getAccount = async (request, response, next) => {
     //input
     const accountId = request.params.id;
@@ -36,5 +55,6 @@ export default (dependencies) => {
     createAccount,
     getAccount,
     listAccounts,
+    updateAccount,
   };
 };
