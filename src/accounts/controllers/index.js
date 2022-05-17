@@ -67,12 +67,20 @@ export default (dependencies) => {
     try {
       const { movieId } = request.body;
       const id = request.params.id;
-      const account = await accountService.addFavourite(
-        id,
-        movieId,
-        dependencies
-      );
-      response.status(200).json(account);
+      const favourites = await accountService.getFavourites(id, dependencies);
+      const duplicate = await favourites.filter(favourite => favourite == parseInt(movieId));
+      if(duplicate[0]){
+        response.status(405).json({error: "duplicate data detected"});
+      }else{
+          const account = await accountService.addFavourite(
+            id,
+            movieId,
+            dependencies
+          );
+          response.status(200).json(account);
+
+      }
+      
     } catch (err) {
       next(new Error(`Invalid Data ${err.message}`));
     }

@@ -1,9 +1,14 @@
 import express from "express";
 import { genres } from "./genresData";
+import GenresController from "./controllers";
+ const genresController = GenresController();
 
 const router = express.Router();
+
+
+
 router.get("/", (req, res) => {
-  res.json(genres.genres);
+  res.json(genresController.listGenres());
 });
 
 
