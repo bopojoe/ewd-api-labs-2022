@@ -31,3 +31,5 @@ export const getMovies = async () => {
   });
   return res.json();
 };
+
+

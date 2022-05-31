@@ -10,7 +10,7 @@ const MoviesContextProvider = (props) => {
   useEffect(() => {
     if (authenticated) {
       getMovies().then((result) => {
-        console.log(result);
+       // console.log(result);
         setMovies(result);
       });
     }

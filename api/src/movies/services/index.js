@@ -19,4 +19,23 @@ export default {
     );
     return response.data;
   },
+  getMovieImages: async (id, dependancies) => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.TMDB_KEY}`
+    );
+    return response.data;
+  },
+  getMovieReviews: async (id, dependancies) => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${process.env.TMDB_KEY}`
+    );
+    return response.data;
+  },
+  getMovieCredits: async (id, dependancies) => {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.TMDB_KEY}`
+    );
+    const data = response.data;
+    return response.data;
+  },
 };
